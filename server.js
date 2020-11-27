@@ -14,12 +14,17 @@ app.all('*', function(req, res, next) {
 });
 
 function getTxts() {
-    fs.readdir(path.resolve(__dirname, '/interviews'), function(err, files) {
-        if (err) {
-            return '目录不存在';
+    fs.readdir('./interviews',function(err,files){
+        var dirs = [];
+        for(var i = 0;i<files.length;i++){
+            var filename = files[i];
+            var stats = fs.statSync('./interviews/'+ filename);
+            if(stats.isDirectory()){
+                dirs.push(filename);
+            }
         }
-        return files;
-    })
+        return dirs;
+    });
 }
 
 app.get('/', function(req, res) {
